@@ -1,0 +1,24 @@
+.post-block, .sidebar, .header, .footer {
+  border-radius: 12px;
+}
+
+.site-title {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.post-title {
+  font-weight: 700;
+}
+
+.post-body {
+  line-height: 1.9;
+}
+
+code, pre {
+  border-radius: 8px;
+}
+
+img {
+  border-radius: 8px;
+}

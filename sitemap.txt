@@ -1,5 +1,8 @@
+https://b3nk-x1.github.io/undefined/SHCTF%20wp(Web)/
 https://b3nk-x1.github.io/categories/index.html
 https://b3nk-x1.github.io/tags/index.html
 https://b3nk-x1.github.io/about/index.html
-https://b3nk-x1.github.io/undefined/hello-world/
 https://b3nk-x1.github.io/
+https://b3nk-x1.github.io/tags/CTF/
+https://b3nk-x1.github.io/tags/Web/
+https://b3nk-x1.github.io/categories/Writeup/

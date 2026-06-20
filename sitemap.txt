@@ -1,3 +1,4 @@
+https://b3nk-x1.github.io/posts/%E7%9B%98%E5%8F%A4%E7%9F%B3WP(%E7%89%A9%E8%81%94+%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8F%96%E8%AF%81)/
 https://b3nk-x1.github.io/about/index.html
 https://b3nk-x1.github.io/posts/SHCTF%20wp(Web)/
 https://b3nk-x1.github.io/posts/SHCTF%20wp(Misc+Crypto)/
@@ -11,4 +12,6 @@ https://b3nk-x1.github.io/tags/Crypto/
 https://b3nk-x1.github.io/tags/Web/
 https://b3nk-x1.github.io/tags/Pwn/
 https://b3nk-x1.github.io/tags/Reverse/
+https://b3nk-x1.github.io/tags/Forensics/
+https://b3nk-x1.github.io/tags/IoT/
 https://b3nk-x1.github.io/categories/Writeup/

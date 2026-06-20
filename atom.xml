@@ -10,7 +10,25 @@
   <rights>All rights reserved 2026, b3nk</rights>
   <subtitle>CTF / 网安学习记录</subtitle>
   <title>b3nk's Blog</title>
-  <updated>2026-06-17T06:50:10.800Z</updated>
+  <updated>2026-06-20T05:39:25.462Z</updated>
+  <entry>
+    <author>
+      <name>b3nk</name>
+    </author>
+    <category term="Writeup" scheme="https://b3nk-x1.github.io/categories/Writeup/"/>
+    <category term="CTF" scheme="https://b3nk-x1.github.io/tags/CTF/"/>
+    <category term="Forensics" scheme="https://b3nk-x1.github.io/tags/Forensics/"/>
+    <category term="IoT" scheme="https://b3nk-x1.github.io/tags/IoT/"/>
+    <content>
+      <![CDATA[<p>这篇记录盘古石题目里物联网与计算机取证部分的处理过程，主要结合盘古石、火眼和 Codex 辅助分析完成。</p><h2 id="物联网"><a href="#物联网" class="headerlink" title="物联网"></a>物联网</h2><h3 id="1-23"><a href="#1-23" class="headerlink" title="1-23"></a>1-23</h3><p>先将磁盘挂载上，拿到黄志远 <code>car.E01</code> 检材，尝试用 Codex 帮助取证，将题目与检材发送，提示词如下：</p><blockquote><p>你是一名取证专家，当下需要你帮助解决一些问题，以下检材与问题已经移交给你，请帮助解决。</p></blockquote><p>得到以下答案，如截图所示：</p><p><img src="/images/pangu-wp/Snipaste_2026-05-10_16-41-16.png"></p><h3 id="28、29、34"><a href="#28、29、34" class="headerlink" title="28、29、34"></a>28、29、34</h3><p>接着尝试林小碗手表检材，发现 Codex 在这个部分的能力有限，只得到以下答案：</p><p><img src="/images/pangu-wp/Snipaste_2026-05-10_16-43-50.png"></p><p><img src="/images/pangu-wp/Snipaste_2026-05-10_16-44-03.png"></p><p>由于缺少专业的物联网取证工具，这部分题目只能先解到这里。</p><h2 id="计算机取证"><a href="#计算机取证" class="headerlink" title="计算机取证"></a>计算机取证</h2><ol><li>用火眼取证分析软件挂载检材，在工具箱中找到哈希计算工具，计算得到答案。</li></ol><p><img src="/images/pangu-wp/Snipaste_2026-05-10_16-49-17.png"></p><ol start="2"><li>火眼找到基本信息。</li></ol><p><img src="/images/pangu-wp/Snipaste_2026-05-10_16-52-07.png"></p><ol start="3"><li>火眼找到开关机时间。</li></ol><p><img src="/images/pangu-wp/Snipaste_2026-05-10_16-54-25.png"></p><ol start="4"><li>按这个路径查找，拿到答案。</li></ol><p><img src="/images/pangu-wp/Snipaste_2026-05-10_16-58-32.png"></p><ol start="5"><li>在火眼中看到该软件出现在 Chrome 浏览器下载记录里。</li></ol><p><img src="/images/pangu-wp/Snipaste_2026-05-10_16-59-40.png"></p><ol start="6"><li>在盘古石对应路径中找到链接。这里需要注意 <code>UTC+8</code> 和 <code>UTC+0</code> 的时间换算，可以看到密码。</li></ol><p><img src="/images/pangu-wp/Snipaste_2026-05-10_17-13-55.png"></p><p>7-9. 这几题由 Codex 辅助进行，跑出答案如下图所示。</p><p><img src="/images/pangu-wp/Snipaste_2026-05-10_17-02-57.png"></p><ol start="11"><li>这一题也是 Codex 辅助完成。</li></ol><p><img src="/images/pangu-wp/Snipaste_2026-05-10_17-14-36.png"></p><ol start="13"><li>在火眼浏览器记录中多次看到这个软件下载，在网上找相关信息后，预测为 <code>1Password</code>。</li></ol><p><img src="/images/pangu-wp/Snipaste_2026-05-10_17-05-09.png"></p><ol start="14"><li>具体位置也在这个 <code>1Password</code> 相关内容中。</li></ol><p><img src="/images/pangu-wp/Snipaste_2026-05-10_17-16-32.png"></p><p>16、17. 这两题由 Codex 辅助完成。</p><p><img src="/images/pangu-wp/Snipaste_2026-05-10_17-19-23.png"></p><p><img src="/images/pangu-wp/Snipaste_2026-05-10_17-19-31.png"></p><p>23-25. 这一段继续用 Codex 辅助进行。</p><p><img src="/images/pangu-wp/Snipaste_2026-05-10_17-20-32.png"></p><p>26-27. 换检材后，尝试在火眼取证软件中寻找无果，最后还是借助 Codex 进行分析。</p><p><img src="/images/pangu-wp/Snipaste_2026-05-10_17-21-57.png"></p><p>28-40. 将文件导出后先尝试解压，发现需要密码。继续排查后，在火眼文件中找到“渗透密码”的相关文件，路径如下图所示：</p><p><img src="/images/pangu-wp/Snipaste_2026-05-10_17-24-40.png"></p><p>后面发现导出的内容是一批图像，怀疑是拼图；同时在盘古石软件中也能看到对应图像。</p><p><img src="/images/pangu-wp/Snipaste_2026-05-10_17-37-58.png"></p><p>图片拼合后是《鬼灭之刃》人物图像，带有红色文字“今晚去杀鬼”，据此得到密码。Codex 辅助过程如下：</p><p><img src="/images/pangu-wp/Snipaste_2026-05-10_17-28-05.png"></p><p>由于 Codex 拼图能力有限，只拼好了一部分，但通过肉眼仍然可以识别，读出密码后继续解压文件。</p><p>最后把结果再交给 Codex，得到答案：</p><p><img src="/images/pangu-wp/Snipaste_2026-05-10_17-31-38.png"></p><p><img src="/images/pangu-wp/Snipaste_2026-05-10_17-32-08.png"></p>]]>
+    </content>
+    <id>https://b3nk-x1.github.io/posts/%E7%9B%98%E5%8F%A4%E7%9F%B3WP(%E7%89%A9%E8%81%94+%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8F%96%E8%AF%81)/</id>
+    <link href="https://b3nk-x1.github.io/posts/%E7%9B%98%E5%8F%A4%E7%9F%B3WP(%E7%89%A9%E8%81%94+%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8F%96%E8%AF%81)/"/>
+    <published>2026-06-20T06:15:00.000Z</published>
+    <summary>整理盘古石题目中物联网与计算机取证部分的处理过程，并补齐对应截图。</summary>
+    <title>盘古石WP（物联 + 计算机取证）</title>
+    <updated>2026-06-20T05:39:25.462Z</updated>
+  </entry>
   <entry>
     <author>
       <name>b3nk</name>

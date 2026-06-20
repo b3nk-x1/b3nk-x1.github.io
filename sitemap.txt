@@ -1,3 +1,4 @@
+https://b3nk-x1.github.io/posts/hnctf-writeups/
 https://b3nk-x1.github.io/posts/yuwang-datasafe-2026-writeups/
 https://b3nk-x1.github.io/posts/yuwang-2026-writeups/
 https://b3nk-x1.github.io/posts/zerogctf-writeups/
@@ -23,4 +24,6 @@ https://b3nk-x1.github.io/tags/ZeroGCTF/
 https://b3nk-x1.github.io/tags/%E5%BE%A1%E7%BD%91%E6%9D%AF/
 https://b3nk-x1.github.io/tags/%E6%95%B0%E6%8D%AE%E5%AE%89%E5%85%A8/
 https://b3nk-x1.github.io/tags/LLM/
+https://b3nk-x1.github.io/tags/H-NCTF/
+https://b3nk-x1.github.io/tags/OSINT/
 https://b3nk-x1.github.io/categories/Writeup/

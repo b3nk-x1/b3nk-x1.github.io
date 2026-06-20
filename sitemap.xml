@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://b3nk-x1.github.io/posts/zerogctf-writeups/</loc>
+    
+    <lastmod>2026-06-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://b3nk-x1.github.io/posts/litctf-2026-writeups/</loc>
     
     <lastmod>2026-06-20</lastmod>
@@ -140,6 +149,13 @@
   
   <url>
     <loc>https://b3nk-x1.github.io/tags/IoT/</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://b3nk-x1.github.io/tags/ZeroGCTF/</loc>
     <lastmod>2026-06-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
